@@ -1,3 +1,5 @@
+using System.Linq;
+
 public static class ArraysTester {
     /// <summary>
     /// Entry point for the tests
@@ -39,7 +41,17 @@ public static class ArraysTester {
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
-        return new double[0]; // replace this return statement with your own
+        //First I'll initialize a new list that is size (length)
+        List<double> multiplesList = new(length);  
+
+        //Next I'll create a for loop that loops until the end of the length of the given list, and starts at 1 since the number we multiply by should start at 1 for doing multiples
+        for (int n = 1; n <= length; n++)   //while n(the number that number is multiplied by) is less than or equal to length of the list
+        {
+            double multiple = number * n;   //Then multiply (number) by n, and put it into multiple
+            multiplesList.Add(multiple);   //then add each multiple to multiplesList
+        }
+
+        return multiplesList.ToArray(); //Then return the mutliplesList in array form using ToArray
     }
     
     /// <summary>
@@ -57,5 +69,19 @@ public static class ArraysTester {
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
 
+        //First I'll create a list called rotatedData that will be the count size of the inserted list
+        List<int> rotatedData = new(data.Count);
+
+        //Next I will copy the last amount of elements in the new list to the beginning using the Skip method. This data to copy will be the size of the list minus the amount parameter
+        rotatedData.AddRange(data.Skip(data.Count - amount));
+
+        //Then I'll use the Take method to copy the remaining amount of elements to the end of the list
+        rotatedData.AddRange(data.Take(data.Count - amount));
+
+        //Then I'll loop through the data list and insert the rotatedData list into it
+        for (int n = 0; n < data.Count; n++)    //Loop through each item in the list until we reach the length or size of the data list
+        {
+            data[n] = rotatedData[n];
+        }
     }
 }
