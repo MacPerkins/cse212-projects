@@ -10,13 +10,13 @@
  */
 public static class MysteryStack1 {
     public static string Run(string text) {
-        var stack = new Stack<char>();
+        var stack = new Stack<char>();  //racecar
         foreach (var letter in text)
-            stack.Push(letter);
+            stack.Push(letter); //r a c e c a r
 
         var result = "";
         while (stack.Count > 0)
-            result += stack.Pop();
+            result += stack.Pop();  // r a c e c a r
 
         return result;
     }

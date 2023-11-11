@@ -19,13 +19,14 @@ public static class TakingTurns {
         // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
         Console.WriteLine("Test 1");
         var players = new TakingTurnsQueue();
-        players.AddPerson("Bob", 2);
-        players.AddPerson("Tim", 5);
+        players.AddPerson("Bob", 2);   
+        players.AddPerson("Tim", 5);    
         players.AddPerson("Sue", 3);
         // Console.WriteLine(players);    // This can be un-commented out for debug help
         while (players.Length > 0)
             players.GetNextPerson();
-        // Defect(s) Found: 
+        // Defect(s) Found: Code loops through one person and all their turns before looping through other people.
+        //It also loops through people in reverse, like a stack, not a queue. Probably need to change the index of the item to be inserted.
 
         Console.WriteLine("---------");
 
@@ -48,7 +49,7 @@ public static class TakingTurns {
         while (players.Length > 0)
             players.GetNextPerson();
 
-        // Defect(s) Found: 
+        // Defect(s) Found: None after previously mentioned code was fixed.
 
         Console.WriteLine("---------");
 
@@ -61,12 +62,12 @@ public static class TakingTurns {
         players.AddPerson("Bob", 2);
         players.AddPerson("Tim", 0);
         players.AddPerson("Sue", 3);
-        // Console.WriteLine(players);
+        //Console.WriteLine(players);
         for (int i = 0; i < 10; i++) {
             players.GetNextPerson();
-            // Console.WriteLine(players);
+            //Console.WriteLine(players);
         }
-        // Defect(s) Found: 
+        // Defect(s) Found: No checking for if turns = 0; added a condition that adds a person back into the queue if their turns = 0;
 
         Console.WriteLine("---------");
 
@@ -76,6 +77,6 @@ public static class TakingTurns {
         Console.WriteLine("Test 4");
         players = new TakingTurnsQueue();
         players.GetNextPerson();
-        // Defect(s) Found:
+        // Defect(s) Found: None. Error message is displayed.
     }
 }
