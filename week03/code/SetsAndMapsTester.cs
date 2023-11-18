@@ -46,7 +46,7 @@ public static class SetsAndMapsTester {
         Console.WriteLine(IsAnagram("BC", "AD")); // false
         Console.WriteLine(IsAnagram("Ab", "Ba")); // true
         Console.WriteLine(IsAnagram("A Decimal Point", "Im a Dot in Place")); // true
-        Console.WriteLine(IsAnagram("tom marvolo riddle", "i am lord voldemort")); // true
+        Console.WriteLine(IsAnagram("tom marvolo riddle", "i am lord voldemort")); // true (This is funny, I like it)
         Console.WriteLine(IsAnagram("Eleven plus Two", "Twelve Plus One")); // true
         Console.WriteLine(IsAnagram("Eleven plus One", "Twelve Plus One")); // false
 
@@ -111,6 +111,20 @@ public static class SetsAndMapsTester {
         // To display the pair correctly use something like:
         // Console.WriteLine($"{word} & {pair}");
         // Each pair of words should displayed on its own line.
+
+        HashSet<string> uniqueWords = new HashSet<string>(words);
+        HashSet<string> wordPairs = new HashSet<string>();
+
+        foreach (string word in words) {
+            string reverse = new string(word.Reverse().ToArray());
+
+            if (word != reverse && uniqueWords.Contains(reverse)) {
+                wordPairs.Add($"{word} & {reverse}");
+            }
+        }
+        foreach (string pair in wordPairs) {
+            Console.WriteLine(pair);
+        }
     }
 
     /// <summary>
@@ -132,6 +146,14 @@ public static class SetsAndMapsTester {
         foreach (var line in File.ReadLines(filename)) {
             var fields = line.Split(",");
             // Todo Problem 2 - ADD YOUR CODE HERE
+            if (fields.Length > 3) {
+                var degree = fields[3].Trim();
+                if (degrees.ContainsKey(degree)) {
+                    degrees[degree]++;
+                } else {
+                    degrees.Add(degree, 1);
+                }
+            }
         }
 
         return degrees;
@@ -158,7 +180,34 @@ public static class SetsAndMapsTester {
     /// #############
     private static bool IsAnagram(string word1, string word2) {
         // Todo Problem 3 - ADD YOUR CODE HERE
-        return false;
+
+        word1 = word1.ToLower().Replace(" ", "");
+        word2 = word2.ToLower().Replace(" ", "");
+
+        if (word1.Length != word2.Length) {
+            return false;
+        }
+
+        Dictionary<char, int> charCount1 = new Dictionary<char, int>();
+        Dictionary<char, int> charCount2 = new Dictionary<char, int>();
+
+        foreach (char c in word1) {
+            if (charCount1.ContainsKey(c)) {
+                charCount1[c]++;
+            } else {
+                charCount1.Add(c, 1);
+            }
+        }
+
+        foreach (char c in word2) {
+            if (charCount2.ContainsKey(c)) {
+                charCount2[c]++;
+            } else {
+                charCount2.Add(c, 1);
+            }
+        }        
+
+        return charCount1.OrderBy(pair => pair.Key).SequenceEqual(charCount2.OrderBy(pair => pair.Key));
     }
 
     /// <summary>
@@ -232,5 +281,11 @@ public static class SetsAndMapsTester {
         var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, options);
         // 1. Add your code to map the json to the feature collection object
         // 2. Print out each place a earthquake has happened today
+        foreach (var feature in featureCollection.Features) {
+            var properties = feature.Properties;
+            var place = properties.Place;
+            var magnitude = properties.Mag;
+            Console.WriteLine($"{place} - Mag {magnitude:F2}");
+        }
     }
 }
